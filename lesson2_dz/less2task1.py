@@ -17,6 +17,7 @@ from bs4 import BeautifulSoup
 import requests
 from pprint import pprint
 import re
+import json
 
 
 def salary_parsing(vacancy_salary):
@@ -33,17 +34,17 @@ def salary_parsing(vacancy_salary):
             vacancy_salary_to = None
             vacancy_salary_currency = None
         elif vacancy_salary.startswith("от"):
-            vacancy_salary_from = "".join(s[0].split())
+            vacancy_salary_from = int("".join(s[0].split()))
             vacancy_salary_to = None
         elif vacancy_salary.startswith("до"):
-            vacancy_salary_to = "".join(s[0].split())
+            vacancy_salary_to = int("".join(s[0].split()))
             vacancy_salary_from = None
         else:
-            vacancy_salary_from = "".join(s[0].split())
+            vacancy_salary_from = int("".join(s[0].split()))
             if len(s) != 1:
-                vacancy_salary_to = "".join(s[1].split())
+                vacancy_salary_to = int("".join(s[1].split()))
             else:
-                vacancy_salary_to = "".join(s[0].split())
+                vacancy_salary_to = int("".join(s[0].split()))
         vacancy_salary_currency = vacancy_salary.split()[-1]
         if vacancy_salary_currency.endswith("месяц"):
             vacancy_salary_currency = vacancy_salary_currency[:-6]
@@ -135,7 +136,9 @@ def superjob_search(vacancy, number_of_pages=1):
                 "http://superjob.ru" + temp_info.find("a", {"class": "icMQ_"})["href"]
             )
             vacancy_salary = temp_info.find(
-                "span", {"class": "_3mfro _2Wp8I PlM3e _2JVkc _2VHxz"}
+                "span",
+                {"class": "_3mfro"}
+                # "span", {"class": "_3mfro _2Wp8I PlM3e _2JVkc _2VHxz"}
             )
             vacancy_site = "superjob.ru"
             making_result(vacancy_name, vacancy_link, vacancy_site, vacancy_salary)
@@ -155,4 +158,7 @@ if __name__ == "__main__":
     superjob_search(vacancy, number_of_pages)
     pprint(result)
     print(len(result))
+
+    with open("vacancies.json", "w") as f:
+        json.dump(result, f)
 
