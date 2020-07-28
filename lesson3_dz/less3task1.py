@@ -48,7 +48,8 @@ def clear_db(name):
 
 if __name__ == "__main__":
 
-    with open("/lesson3_dz/vacancies.json", "r") as f:
+    # with open("/lesson3_dz/vacancies.json", "r") as f:
+    with open("vacancies.json", "r") as f:
         data = json.load(f)
 
     # clear_db("vacancies_db")
@@ -57,8 +58,3 @@ if __name__ == "__main__":
     vacancies_with_salary_mte(salary)
 
 
-# import os
-
-# print(os.getcwd())
-# print(os.path.abspath(os.curdir))
-# print(os.path.abspath(__file__))
